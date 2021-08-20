@@ -430,7 +430,9 @@ class TicTacToe4x4x4(arcade.Window):
             response = self.clientsocket.recv(1024).decode("ascii")
 
             formatted_response = eval(response)
-            self.modify_cube(*formatted_response)  # this might be a problem
+            self.modify_cube(
+                *formatted_response, self.players[1 - self.player_index]["symbol"]
+            )  # this might be a problem
 
             return
 
