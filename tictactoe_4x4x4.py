@@ -9,9 +9,11 @@ GRID_Y = SCREEN_HEIGHT - 100
 BACKGROUND_COLOR = arcade.color.WHITE
 
 
-class MyGame(arcade.Window):
-    def __init__(self, width, height, title):
+class TicTacToe4x4x4(arcade.Window):
+    def __init__(self, width, height, title, clientsocket):
         super().__init__(width, height, title)
+
+        self.clientsocket = clientsocket
 
         arcade.set_background_color(BACKGROUND_COLOR)
 
@@ -296,7 +298,7 @@ class MyGame(arcade.Window):
 
         return wins
 
-    def setup(self):
+    def setup(self, player_index, player_type):
 
         self.game_over = False
 
@@ -407,16 +409,31 @@ class MyGame(arcade.Window):
             ],
         ]
 
-        self.player_index = 0
+        self.player_index = player_index
+        self.player_type = player_type
 
         self.players = [
             {"symbol": "X", "score": 0},
             {"symbol": "O", "score": 0},
         ]
 
-        self.current_player = self.players[0]
+        self.current_player = self.players[self.player_index]
+
+    def modify_cube(self, grid, row, col, symbol):
+        self.cube[grid][row][col]["symbol"] = symbol
 
     def on_mouse_press(self, x, y, button, key_modifiers):
+
+        if (self.player_type == "server" and self.current_player["symbol"] == "O") or (
+            self.player_type == "client" and self.current_player["symbol"] == "X"
+        ):
+            response = self.clientsocket.recv(1024).decode("ascii")
+
+            formatted_response = eval(response)
+            self.modify_cube(*formatted_response)  # this might be a problem
+
+            return
+
         grid = self.hit_grid(x, y)
         if grid == -1:
             return
@@ -430,7 +447,7 @@ class MyGame(arcade.Window):
 
         print(grid, row, col)
 
-        self.cube[grid][row][col]["symbol"] = self.current_player["symbol"]
+        self.modify_cube(grid, row, col, self.current_player["symbol"])
 
         self.current_player["score"] = self.check_win(
             self.current_player["symbol"], grid, row, col
@@ -438,6 +455,8 @@ class MyGame(arcade.Window):
 
         self.player_index = (self.player_index + 1) % len(self.players)
         self.current_player = self.players[self.player_index]
+
+        self.clientsocket.send(f"({grid},{row},{col})".encode("ascii"))
 
         if self.is_cube_full():
             self.game_over = True
@@ -537,7 +556,7 @@ class MyGame(arcade.Window):
 
 def main():
     """Main method"""
-    game = MyGame(SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_TITLE)
+    game = TicTacToe4x4x4(SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_TITLE)
     game.setup()
     arcade.run()
 
