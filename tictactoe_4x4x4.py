@@ -556,12 +556,12 @@ class TicTacToe4x4x4(arcade.Window):
             arcade.draw_line(lineX, lineY, lineX, lineY - grid, (1, 1, 1), scale * 5)
 
 
-def main():
-    """Main method"""
-    game = TicTacToe4x4x4(SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_TITLE)
-    game.setup()
-    arcade.run()
+# def main():
+#     """Main method"""
+#     game = TicTacToe4x4x4(SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_TITLE)
+#     game.setup()
+#     arcade.run()
 
 
-if __name__ == "__main__":
-    main()
+# if __name__ == "__main__":
+#     main()
