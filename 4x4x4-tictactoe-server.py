@@ -302,7 +302,7 @@ class TicTacToe4x4x4Server(arcade.Window):
 
         return wins
 
-    def setup(self):
+    def setup(self, player_index=0):
 
         self.game_over = False
 
@@ -413,10 +413,14 @@ class TicTacToe4x4x4Server(arcade.Window):
             ],
         ]
 
+        self.player_index = player_index
+
         self.players = [
             {"symbol": "X", "score": 0},
             {"symbol": "O", "score": 0},
         ]
+
+        self.current_player = self.players[self.player_index]
 
     def modify_cube(self, grid, row, col, symbol):
         self.cube[grid][row][col]["symbol"] = symbol
