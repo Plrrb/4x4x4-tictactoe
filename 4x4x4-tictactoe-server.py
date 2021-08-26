@@ -418,8 +418,6 @@ class TicTacToe4x4x4Server(arcade.Window):
             {"symbol": "O", "score": 0},
         ]
 
-        # self.current_player = self.players[self.player_index]
-
     def modify_cube(self, grid, row, col, symbol):
         self.cube[grid][row][col]["symbol"] = symbol
 
