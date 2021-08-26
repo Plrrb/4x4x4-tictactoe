@@ -427,7 +427,7 @@ class TicTacToe4x4x4Server(arcade.Window):
 
     def recv_move(self):
         while True:
-            response = self.clientsocket.recv(1024).decode("ascii")
+            response = self.client_socket.recv(1024).decode("ascii")
 
             self.my_turn = not self.my_turn
 
@@ -463,7 +463,7 @@ class TicTacToe4x4x4Server(arcade.Window):
 
         self.my_turn = not self.my_turn
 
-        self.clientsocket.send(f"({grid},{row},{col})".encode("ascii"))
+        self.client_socket.send(f"({grid},{row},{col})".encode("ascii"))
 
         if self.is_cube_full():
             self.game_over = True
