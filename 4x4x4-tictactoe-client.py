@@ -425,11 +425,15 @@ class TicTacToe4x4x4Client(arcade.Window):
     def modify_cube(self, grid, row, col, symbol):
         self.cube[grid][row][col]["symbol"] = symbol
 
+    def switch_player(self):
+        self.my_turn = not self.my_turn
+        self.current_player = self.players[self.player_index]
+
     def recv_move(self):
         while True:
             response = self.client_socket.recv(1024).decode("ascii")
 
-            self.my_turn = not self.my_turn
+            self.switch_player()
 
             formatted_response = eval(response)
             self.modify_cube(
@@ -461,7 +465,7 @@ class TicTacToe4x4x4Client(arcade.Window):
             self.current_player["symbol"], grid, row, col
         )
 
-        self.my_turn = not self.my_turn
+        self.switch_player()
 
         self.client_socket.send(f"({grid},{row},{col})".encode("ascii"))
 
