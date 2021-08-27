@@ -427,7 +427,7 @@ class TicTacToe4x4x4Client(arcade.Window):
 
     def switch_player(self):
         self.my_turn = not self.my_turn
-        self.current_player = self.players[self.player_index]
+        self.current_player = self.players[1 - self.player_index]
 
     def recv_move(self):
         while True:
