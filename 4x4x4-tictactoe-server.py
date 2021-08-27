@@ -302,7 +302,7 @@ class TicTacToe4x4x4Server(arcade.Window):
 
         return wins
 
-    def setup(self, player_index=0):
+    def setup(self):
 
         self.game_over = False
 
@@ -413,7 +413,7 @@ class TicTacToe4x4x4Server(arcade.Window):
             ],
         ]
 
-        self.player_index = player_index
+        self.player_index = 0
 
         self.players = [
             {"symbol": "X", "score": 0},
