@@ -443,10 +443,7 @@ class TicTacToe4x4x4Server(arcade.Window):
     def on_mouse_press(self, x, y, button, key_modifiers):
 
         if not self.my_turn:
-
             return
-
-        self.switch_player()
 
         grid = self.hit_grid(x, y)
         if grid == -1:
@@ -468,6 +465,7 @@ class TicTacToe4x4x4Server(arcade.Window):
         )
 
         self.client_socket.send(f"({grid},{row},{col})".encode("ascii"))
+        self.switch_player()
 
         if self.is_cube_full():
             self.game_over = True

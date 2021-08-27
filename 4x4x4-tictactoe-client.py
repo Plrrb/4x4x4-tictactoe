@@ -448,8 +448,6 @@ class TicTacToe4x4x4Client(arcade.Window):
 
             return
 
-        self.switch_player()
-
         grid = self.hit_grid(x, y)
         if grid == -1:
             return
@@ -470,6 +468,7 @@ class TicTacToe4x4x4Client(arcade.Window):
         )
 
         self.client_socket.send(f"({grid},{row},{col})".encode("ascii"))
+        self.switch_player()
 
         if self.is_cube_full():
             self.game_over = True
