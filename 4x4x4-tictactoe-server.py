@@ -446,6 +446,8 @@ class TicTacToe4x4x4Server(arcade.Window):
 
             return
 
+        self.switch_player()
+
         grid = self.hit_grid(x, y)
         if grid == -1:
             return
@@ -464,8 +466,6 @@ class TicTacToe4x4x4Server(arcade.Window):
         self.current_player["score"] = self.check_win(
             self.current_player["symbol"], grid, row, col
         )
-
-        self.switch_player()
 
         self.client_socket.send(f"({grid},{row},{col})".encode("ascii"))
 
