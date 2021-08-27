@@ -427,18 +427,18 @@ class TicTacToe4x4x4Server(arcade.Window):
 
     def switch_player(self):
         self.my_turn = not self.my_turn
-        self.current_player = self.players[1 - self.player_index]
+        self.player_index = 1 - self.player_index
+        self.current_player = self.players[self.player_index]
 
     def recv_move(self):
         while True:
             response = self.client_socket.recv(1024).decode("ascii")
 
-            self.switch_player()
-
             formatted_response = eval(response)
             self.modify_cube(
-                *formatted_response, self.players[1 - self.player_index]["symbol"]
+                *formatted_response, self.current_player["symbol"]
             )  # this * might be a problem
+            self.switch_player()
 
     def on_mouse_press(self, x, y, button, key_modifiers):
 
@@ -584,7 +584,7 @@ def main():
         SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_TITLE, client_socket
     )
 
-    recv_thread = threading.Thread(target=game.recv_move)
+    recv_thread = threading.Thread(target=game.recv_move, daemon=True)
 
     game.setup()
     recv_thread.start()
