@@ -173,11 +173,13 @@ class TicTacToe4x4x4(arcade.Window):
                 == self.cube[2][2][i]["symbol"]
                 == self.cube[3][3][i]["symbol"]
             ):
-                self.cube[0][0][i]["is_win"] = self.cube[1][1][i]["is_win"] = self.cube[
-                    2
-                ][2][i]["is_win"] = self.cube[3][3][i]["is_win"] = win_color
+                if input_col == input_row and input_layer == i:
+                    self.cube[0][0][i]["is_win"] = self.cube[1][1][i][
+                        "is_win"
+                    ] = self.cube[2][2][i]["is_win"] = self.cube[3][3][i][
+                        "is_win"
+                    ] = win_color
                 wins += 1
-
                 print("multi layer diagonal 1", player, i)
 
             if (
@@ -187,11 +189,20 @@ class TicTacToe4x4x4(arcade.Window):
                 == self.cube[2][0][i]["symbol"]
                 == self.cube[3][0][i]["symbol"]
             ):
-                self.cube[0][2][i]["is_win"] = self.cube[1][1][i]["is_win"] = self.cube[
-                    2
-                ][0][i]["is_win"] = self.cube[3][0][i]["is_win"] = win_color
-                print("multi layer diagonal 2", player, i)
+                if (
+                    (input_layer == 0 and input_row == 2)
+                    or (input_layer == 1 and input_row == 1)
+                    or (input_layer == 2 and input_row == 0)
+                    or (input_layer == 3 and input_row == 0)
+                    and input_col == i
+                ):
+                    self.cube[0][2][i]["is_win"] = self.cube[1][1][i][
+                        "is_win"
+                    ] = self.cube[2][0][i]["is_win"] = self.cube[3][0][i][
+                        "is_win"
+                    ] = win_color
                 wins += 1
+                print("multi layer diagonal 2", player, i)
 
         # horizontal diagonal
         for i in range(d):
