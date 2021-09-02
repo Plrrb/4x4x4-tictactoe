@@ -189,7 +189,7 @@ class TicTacToe4x4x4(arcade.Window):
             ):
                 self.cube[0][2][i]["is_win"] = self.cube[1][1][i]["is_win"] = self.cube[
                     2
-                ][0][i]["is_win"] = self.cube[3][0][i]["is_win"]
+                ][0][i]["is_win"] = self.cube[3][0][i]["is_win"] = win_color
                 print("multi layer diagonal 2", player, i)
                 wins += 1
 
