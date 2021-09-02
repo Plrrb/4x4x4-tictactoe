@@ -184,15 +184,15 @@ class TicTacToe4x4x4(arcade.Window):
 
             if (
                 player
-                == self.cube[0][2][i]["symbol"]
-                == self.cube[1][1][i]["symbol"]
-                == self.cube[2][0][i]["symbol"]
+                == self.cube[0][3][i]["symbol"]
+                == self.cube[1][2][i]["symbol"]
+                == self.cube[2][1][i]["symbol"]
                 == self.cube[3][0][i]["symbol"]
             ):
                 if (
-                    (input_layer == 0 and input_row == 2)
-                    or (input_layer == 1 and input_row == 1)
-                    or (input_layer == 2 and input_row == 0)
+                    (input_layer == 0 and input_row == 3)
+                    or (input_layer == 1 and input_row == 2)
+                    or (input_layer == 2 and input_row == 1)
                     or (input_layer == 3 and input_row == 0)
                     and input_col == i
                 ):
