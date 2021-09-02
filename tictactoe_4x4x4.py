@@ -1,4 +1,7 @@
+import socket
 import arcade
+import argparse
+import threading
 
 
 SCREEN_WIDTH = 1000
@@ -10,10 +13,11 @@ BACKGROUND_COLOR = arcade.color.WHITE
 
 
 class TicTacToe4x4x4(arcade.Window):
-    def __init__(self, width, height, title, clientsocket):
+    def __init__(self, width, height, title, client_socket, my_turn):
         super().__init__(width, height, title)
 
-        self.clientsocket = clientsocket
+        self.client_socket = client_socket
+        self.my_turn = my_turn
 
         arcade.set_background_color(BACKGROUND_COLOR)
 
@@ -298,7 +302,7 @@ class TicTacToe4x4x4(arcade.Window):
 
         return wins
 
-    def setup(self, player_index, player_type):
+    def setup(self):
 
         self.game_over = False
 
@@ -409,8 +413,7 @@ class TicTacToe4x4x4(arcade.Window):
             ],
         ]
 
-        self.player_index = player_index
-        self.player_type = player_type
+        self.player_index = 0
 
         self.players = [
             {"symbol": "X", "score": 0},
@@ -422,17 +425,30 @@ class TicTacToe4x4x4(arcade.Window):
     def modify_cube(self, grid, row, col, symbol):
         self.cube[grid][row][col]["symbol"] = symbol
 
-    def on_mouse_press(self, x, y, button, key_modifiers):
+        self.current_player["score"] = self.check_win(
+            self.current_player["symbol"], grid, row, col
+        )
 
-        if (self.player_type == "server" and self.current_player["symbol"] == "O") or (
-            self.player_type == "client" and self.current_player["symbol"] == "X"
-        ):
-            response = self.clientsocket.recv(1024).decode("ascii")
+    def switch_player(self):
+        self.my_turn = not self.my_turn
+
+        self.player_index = 1 - self.player_index
+
+        self.current_player = self.players[self.player_index]
+
+    def recv_move(self):
+        while True:
+            response = self.client_socket.recv(1024).decode("ascii")
 
             formatted_response = eval(response)
             self.modify_cube(
-                *formatted_response, self.players[1 - self.player_index]["symbol"]
-            )  # this might be a problem
+                *formatted_response, self.current_player["symbol"]
+            )  # this * might be a problem
+            self.switch_player()
+
+    def on_mouse_press(self, x, y, button, key_modifiers):
+
+        if not self.my_turn:
 
             return
 
@@ -451,14 +467,8 @@ class TicTacToe4x4x4(arcade.Window):
 
         self.modify_cube(grid, row, col, self.current_player["symbol"])
 
-        self.current_player["score"] = self.check_win(
-            self.current_player["symbol"], grid, row, col
-        )
-
-        self.player_index = (self.player_index + 1) % len(self.players)
-        self.current_player = self.players[self.player_index]
-
-        self.clientsocket.send(f"({grid},{row},{col})".encode("ascii"))
+        self.client_socket.send(f"({grid},{row},{col})".encode("ascii"))
+        self.switch_player()
 
         if self.is_cube_full():
             self.game_over = True
@@ -554,14 +564,3 @@ class TicTacToe4x4x4(arcade.Window):
             lineX = x + (50 * i)
             lineY = y
             arcade.draw_line(lineX, lineY, lineX, lineY - grid, (1, 1, 1), scale * 5)
-
-
-# def main():
-#     """Main method"""
-#     game = TicTacToe4x4x4(SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_TITLE)
-#     game.setup()
-#     arcade.run()
-
-
-# if __name__ == "__main__":
-#     main()
