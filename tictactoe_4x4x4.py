@@ -17,6 +17,7 @@ class TicTacToe4x4x4(arcade.Window):
         super().__init__(width, height, title)
 
         self.client_socket = client_socket
+        self.ttt_sound = arcade.Sound(":resources:sounds/explosion2.wav")
         self.my_turn = my_turn
 
         arcade.set_background_color(BACKGROUND_COLOR)
@@ -95,6 +96,8 @@ class TicTacToe4x4x4(arcade.Window):
                         ] = win_color
 
                     wins += 1
+                    if not self.ttt.sound.is_playing():
+                        self.ttt_sound.play()
                     print("all in row", player, i, j)
 
         # all in a column
@@ -112,6 +115,8 @@ class TicTacToe4x4x4(arcade.Window):
                             col
                         ]["is_win"] = layer[3][col]["is_win"] = win_color
                     wins += 1
+                    if not self.ttt.sound.is_playing():
+                        self.ttt_sound.play()
                     print("all in col", player, col)
 
         # split layer all in row
@@ -131,6 +136,8 @@ class TicTacToe4x4x4(arcade.Window):
                             "is_win"
                         ] = win_color
                     wins += 1
+                    if not self.ttt.sound.is_playing():
+                        self.ttt_sound.play()
                     print("split layer all in row", player, i, j)
 
         # one layer diagonal
@@ -148,6 +155,8 @@ class TicTacToe4x4x4(arcade.Window):
                     ] = layer[3][3]["is_win"] = win_color
 
                 wins += 1
+                if not self.ttt.sound.is_playing():
+                    self.ttt_sound.play()
                 print("one layer diagonal 1", player, i)
 
             if (
@@ -162,6 +171,8 @@ class TicTacToe4x4x4(arcade.Window):
                         "is_win"
                     ] = layer[0][3]["is_win"] = win_color
                 wins += 1
+                if not self.ttt.sound.is_playing():
+                    self.ttt_sound.play()
                 print("one layer diagonal 2", player, i)
 
         # multi layer diagonal
@@ -180,6 +191,8 @@ class TicTacToe4x4x4(arcade.Window):
                         "is_win"
                     ] = win_color
                 wins += 1
+                if not self.ttt.sound.is_playing():
+                    self.ttt_sound.play()
                 print("multi layer diagonal 1", player, i)
 
             if (
@@ -202,6 +215,8 @@ class TicTacToe4x4x4(arcade.Window):
                         "is_win"
                     ] = win_color
                 wins += 1
+                if not self.ttt.sound.is_playing():
+                    self.ttt_sound.play()
                 print("multi layer diagonal 2", player, i)
 
         # horizontal diagonal
@@ -217,6 +232,8 @@ class TicTacToe4x4x4(arcade.Window):
                     1
                 ][i][1]["is_win"] = self.cube[2][i][2]["is_win"] = win_color
                 wins += 1
+                if not self.ttt.sound.is_playing():
+                    self.ttt_sound.play()
                 print("horizontal diagonal 1", player, i)
 
             if (
@@ -230,6 +247,8 @@ class TicTacToe4x4x4(arcade.Window):
                     1
                 ][i][1]["is_win"] = self.cube[0][i][2]["is_win"] = win_color
                 wins += 1
+                if not self.ttt.sound.is_playing():
+                    self.ttt_sound.play()
                 print("horizontal diagonal 2", player, i)
 
         # thru opposite corners of the cube
@@ -252,6 +271,8 @@ class TicTacToe4x4x4(arcade.Window):
                     1
                 ][2][1]["is_win"] = self.cube[0][3][0]["is_win"] = win_color
                 wins += 1
+                if not self.ttt.sound.is_playing():
+                    self.ttt_sound.play()
 
             print("thru oppsite corners of the cube 1", player)
 
@@ -267,6 +288,8 @@ class TicTacToe4x4x4(arcade.Window):
                     2
                 ][2][2]["is_win"] = self.cube[3][3][3]["is_win"] = win_color
             wins += 1
+            if not self.ttt.sound.is_playing():
+                self.ttt_sound.play()
             print("thru oppsite corners of the cube 2", player)
 
         if (
@@ -288,6 +311,8 @@ class TicTacToe4x4x4(arcade.Window):
                     2
                 ][1][1]["is_win"] = self.cube[3][0][0]["is_win"] = win_color
             wins += 1
+            if not self.ttt.sound.is_playing():
+                self.ttt_sound.play()
             print("thru oppsite corners of the cube 3", player)
 
         if (
@@ -309,6 +334,8 @@ class TicTacToe4x4x4(arcade.Window):
                     2
                 ][2][1]["is_win"] = self.cube[3][3][0]["is_win"] = win_color
             wins += 1
+            if not self.ttt.sound.is_playing():
+                self.ttt_sound.play()
             print("thru oppsite corners of the cube 4", player)
 
         return wins
